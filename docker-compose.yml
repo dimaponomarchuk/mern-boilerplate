@@ -1,0 +1,41 @@
+version: '3.9'
+services:
+  main:
+    image: main:latest
+    networks:
+      - backend
+      # - frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+  server:
+    command: npm run test-dev
+    image: server:latest
+    networks:
+      - backend
+    ports:
+      - 3000:3000
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: server
+  mongo:
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    networks:
+      - backend
+    ports:
+      - '27017:27017'
+  # client:
+  #   image: client:latest
+  #   ports:
+  #     - 1234:80
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #     target: client
+
+networks:
+  backend:
+    driver: bridge

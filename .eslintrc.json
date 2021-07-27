@@ -1,0 +1,60 @@
+{
+  "root": true,
+  "overrides": [
+    {
+      "files": "*.js",
+      "extends": ["eslint-config-airbnb-base", "eslint-config-prettier"],
+      "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+      },
+      "rules": {
+        "class-methods-use-this": "off",
+        "no-underscore-dangle": "off"
+      }
+    },
+    {
+      "files": "*.ts",
+      "extends": ["eslint-config-airbnb-typescript", "eslint-config-prettier"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "project": "./tsconfig.json"
+      },
+      "plugins": ["@typescript-eslint/eslint-plugin"],
+      "rules": {
+        "class-methods-use-this": "off",
+        "no-underscore-dangle": "off"
+      }
+    },
+    {
+      "files": "*.tsx",
+      "extends": [
+        "eslint-config-airbnb-typescript",
+        "eslint-config-airbnb/hooks",
+        "eslint-config-prettier"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "project": "./tsconfig.json"
+      },
+      "plugins": ["@typescript-eslint/eslint-plugin"],
+      "settings": {
+        "react": {
+          "version": "detect"
+        }
+      },
+      "rules": {
+        "class-methods-use-this": "off",
+        "no-underscore-dangle": "off",
+        "react-hooks/exhaustive-deps": "off"
+      }
+    },
+    {
+      "files": "*.test.ts",
+      "rules": {
+        "no-unused-expressions": "off",
+        "@typescript-eslint/no-unused-expressions": "off"
+      }
+    }
+  ]
+}

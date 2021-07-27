@@ -1,0 +1,45 @@
+{
+  "name": "@monorepo/api",
+  "private": true,
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "author": "Dima Ponomarchuk",
+  "license": "MIT",
+  "keywords": [
+    "REST",
+    "API",
+    "ExpressJS",
+    "NodeJS"
+  ],
+  "scripts": {
+    "start": "cross-env NODE_ENV=development ts-node src/index.ts",
+    "build": "cross-env NODE_ENV=production rollup -c",
+    "clean": "rimraf dist",
+    "prepare": "npm run clean && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test-dev": "cross-env NODE_ENV=test nodemon --watch . --ext ts --exec \"mocha -r ts-node/register test/**/*.test.ts\""
+  },
+  "dependencies": {
+    "@types/jsonwebtoken": "^8.5.4",
+    "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.13",
+    "rollup": "^2.51.1",
+    "rollup-plugin-typescript2": "^0.30.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.21",
+    "@types/express": "^4.17.12",
+    "@types/mocha": "^8.2.3",
+    "@types/mongoose": "^5.11.97",
+    "@types/supertest": "^2.0.11",
+    "chai": "^4.3.4",
+    "cross-env": "^7.0.3",
+    "mocha": "^9.0.2",
+    "nodemon": "^2.0.12",
+    "supertest": "^6.1.3",
+    "ts-node": "^10.0.0"
+  }
+}
