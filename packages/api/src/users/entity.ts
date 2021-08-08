@@ -1,31 +1,33 @@
-import crypto from 'crypto';
+import shortUUID from 'short-uuid';
+import cryptoPassword from '../common/crypto';
 
 import Entity from '../common/entity';
 
-export interface IUser {
-  username: string;
-  email: string;
-  password: string;
-  permissionLevel: number;
-}
-
 export default class User extends Entity {
-  // private _userModel: IUser;
   private _username: string;
 
   private _email: string;
 
   private _password: string;
 
+  private _avatarURL?: string;
+
   private _permissionLevel: number;
 
-  constructor(params: IUser) {
-    super();
+  constructor(params: {
+    id: string;
+    username: string;
+    email: string;
+    password: string;
+    avatarURL?: string;
+    permissionLevel: number;
+  }) {
+    super(params.id);
 
-    // this._userModel = userModel;
     this._username = params.username;
     this._email = params.email;
     this._password = params.password;
+    this._avatarURL = params.avatarURL;
     this._permissionLevel = params.permissionLevel;
   }
 
@@ -45,6 +47,20 @@ export default class User extends Entity {
     return this._permissionLevel;
   }
 
+  get avatarURL() {
+    return this._avatarURL;
+  }
+
+  static create(params: { email: string; username: string; password: string }): User {
+    return new User({
+      id: shortUUID.generate(),
+      email: params.email,
+      username: params.username,
+      permissionLevel: 1,
+      password: cryptoPassword(params.password),
+    });
+  }
+
   setPermissionLevel(permissionLevel: number) {
     this._permissionLevel = permissionLevel;
     return true;
@@ -52,17 +68,18 @@ export default class User extends Entity {
 
   setPassword(password: string) {
     if (!process.env.SALT) throw new Error();
-    this._password = crypto
-      .pbkdf2Sync(password, process.env.SALT, 1000, 64, 'sha512')
-      .toString('hex');
+    this._password = cryptoPassword(password);
     return true;
   }
 
   validatePassword(password: string) {
     if (!process.env.SALT) throw new Error();
-    const decoded = crypto
-      .pbkdf2Sync(password, process.env.SALT, 1000, 64, 'sha512')
-      .toString('hex');
+    const decoded = cryptoPassword(password);
     return decoded === this.password;
+  }
+
+  setAvatarURL(url: string) {
+    this._avatarURL = url;
+    return true;
   }
 }

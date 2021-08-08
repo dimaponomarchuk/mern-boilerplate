@@ -1,8 +1,12 @@
 class Entity {
   protected _id: string;
 
-  constructor() {
-    this._id = '';
+  constructor(id: string) {
+    this._id = id;
+  }
+
+  get id() {
+    return this._id;
   }
 
   equals(other: Entity): boolean {

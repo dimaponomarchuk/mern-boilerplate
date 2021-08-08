@@ -30,7 +30,7 @@ export default class AuthMiddleware {
     next: express.NextFunction,
   ) {
     const userService = UserService.getInstance();
-    const user: any = await userService.getByEmail(req.body.email);
+    const user = await userService.getByEmail(req.body.email);
     if (user && user.validatePassword(req.body.password)) {
       req.body = {
         userId: user.id,

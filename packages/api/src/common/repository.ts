@@ -1,4 +1,5 @@
 import { Model } from 'mongoose';
+import Serializer from './serializer';
 
 export interface IWrite<T> {
   create(item: T): Promise<boolean>;
@@ -13,40 +14,50 @@ export interface IRead<T> {
 }
 
 export abstract class BaseRepository<T> implements IRead<T>, IWrite<T> {
-  public readonly _collection: Model<any, any, any>;
+  public readonly Collection: Model<any, any, any>;
 
-  constructor(collection: Model<any, any, any>) {
-    this._collection = collection;
+  public readonly Serializer: Serializer;
+
+  constructor(collection: Model<any, any, any>, serializer: Serializer) {
+    this.Collection = collection;
+    this.Serializer = serializer;
   }
 
   async find(limit: number = 25, page: number = 0): Promise<T[]> {
-    return this._collection
-      .find()
-      .limit(limit)
-      .skip(limit * page)
-      .exec();
+    const list = (
+      await this.Collection.find()
+        .limit(limit)
+        .skip(limit * page)
+        .exec()
+    ).map((value: any) => this.Serializer.deserialize(value));
+
+    return list;
   }
 
   async patch(id: string, item: T): Promise<boolean> {
-    return this._collection.updateOne({ _id: id }, { $set: item });
+    return this.Collection.updateOne(
+      { _id: id },
+      { $set: this.Serializer.serialize(item) },
+      { omitUndefined: true },
+    );
   }
 
   async findOne(id: string): Promise<T> {
-    return this._collection.findOne({ _id: id });
+    return this.Serializer.deserialize(await this.Collection.findOne({ _id: id }).exec());
   }
 
   async create(item: T): Promise<boolean> {
-    const document = new this._collection(item);
+    const document = new this.Collection(this.Serializer.serialize(item));
     await document.save();
 
     return document._id;
   }
 
   async update(id: string, item: T): Promise<boolean> {
-    return this._collection.findByIdAndUpdate(id, item, { new: true });
+    return this.Collection.findByIdAndUpdate(id, this.Serializer.serialize(item), { new: true });
   }
 
   async delete(id: string) {
-    return this._collection.deleteOne({ _id: id });
+    return this.Collection.deleteOne({ _id: id });
   }
 }

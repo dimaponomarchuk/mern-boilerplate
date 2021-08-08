@@ -3,16 +3,28 @@ import express from 'express';
 import UserService from './service';
 
 export default class UsersController {
-  listUsers(req: express.Request, res: express.Response) {
+  async listUsers(req: express.Request, res: express.Response) {
     const userService = UserService.getInstance();
-    const users = userService.list(Number(req.query.limit), Number(req.query.page));
-    res.status(200).send(users);
+    const users = await userService.list(Number(req.query.limit), Number(req.query.page));
+    res.status(200).send(
+      users.map((user) => ({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        avatarURL: user.avatarURL,
+      })),
+    );
   }
 
   async getUserById(req: express.Request, res: express.Response) {
     const userService = UserService.getInstance();
     const user = await userService.readById(req.params.userId);
-    res.status(200).send(user);
+    res.status(200).send({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      avatarURL: user.avatarURL,
+    });
   }
 
   async createUser(req: express.Request, res: express.Response) {

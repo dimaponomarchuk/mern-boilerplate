@@ -32,8 +32,15 @@ export default class UserService implements CRUD<User> {
   }
 
   create(resource: User) {
-    const user = resource;
-    user.setPermissionLevel(1);
+    const user = User.create({
+      email: resource.email,
+      username: resource.username,
+      password: resource.password,
+    });
+
+    if (resource.avatarURL) {
+      user.setAvatarURL(resource.avatarURL);
+    }
 
     return this._repository.create(user);
   }

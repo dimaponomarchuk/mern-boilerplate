@@ -5,16 +5,30 @@ services:
     networks:
       - backend
       # - frontend
+    ports:
+      - 3000:3000
     build:
       context: .
       dockerfile: Dockerfile
-  server:
+  # server:
+  #   image: server:latest
+  #   networks:
+  #     - backend
+  #   ports:
+  #     - 3000:3000
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #     target: server
+  test:
     command: npm run test-dev
+    environment:
+      - DB_URL=mongodb://mongo:27017/test-db
     image: server:latest
     networks:
       - backend
     ports:
-      - 3000:3000
+      - 3333:3333
     build:
       context: .
       dockerfile: Dockerfile

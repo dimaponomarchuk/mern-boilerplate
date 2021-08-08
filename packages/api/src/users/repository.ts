@@ -2,12 +2,13 @@ import { BaseRepository } from '../common/repository';
 
 import User from './entity';
 import UserSchema from './schema';
+import UserSerializer from './serializer';
 
 export default class UserRepository extends BaseRepository<User> {
   private static _instance: UserRepository;
 
   constructor() {
-    super(UserSchema);
+    super(UserSchema, new UserSerializer());
   }
 
   static getInstance(): UserRepository {
@@ -17,7 +18,11 @@ export default class UserRepository extends BaseRepository<User> {
     return UserRepository._instance;
   }
 
-  findByEmail(email: string) {
-    return this._collection.findOne({ email });
+  async findByEmail(email: string) {
+    let user = await this.Collection.findOne({ email }).exec();
+    if (user) {
+      user = this.Serializer.deserialize(user);
+    }
+    return user;
   }
 }

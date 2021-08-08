@@ -5,7 +5,7 @@ import app from '../src/index';
 
 let firstUserIdTest = '';
 const firstUserBody = {
-  name: 'Marcos Silva',
+  username: 'Marcos Silva',
   email: 'tio.maki12n@gmail.com',
   password: 'Pass#your!word',
 };
@@ -16,7 +16,7 @@ const jwt = {
 it('should POST /users', async () => {
   const res = await request(app).post('/users').send(firstUserBody);
   expect(res.status).to.equal(201);
-  expect(res.body).not.to.have.lengthOf(0);
+  expect(res.body).not.to.be.empty;
   expect(res.body).to.be.an('object');
   expect(res.body.id).to.be.an('string');
   firstUserIdTest = res.body.id;
@@ -27,7 +27,7 @@ it(`should POST to /auth and retrieve an access token`, async () => {
     password: firstUserBody.password,
   });
   expect(res.status).to.equal(201);
-  expect(res.body).not.to.have.lengthOf(0);
+  expect(res.body).not.to.be.empty;
   expect(res.body).to.be.an('object');
   expect(res.body.accessToken).to.be.an('string');
   expect(res.body.refreshToken).to.be.an('string');
@@ -72,7 +72,7 @@ it(`should POST to /auth/refresh-token and retrieve a new access token`, async (
       refreshToken: jwt.refreshToken,
     });
   expect(res.status).to.equal(201);
-  expect(res.body).not.to.have.lengthOf(0);
+  expect(res.body).not.to.be.empty;
   expect(res.body).to.be.an('object');
   expect(res.body.accessToken).to.be.an('string');
   expect(res.body.refreshToken).to.be.an('string');

@@ -27,7 +27,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.13",
     "rollup": "^2.51.1",
-    "rollup-plugin-typescript2": "^0.30.0"
+    "rollup-plugin-typescript2": "^0.30.0",
+    "short-uuid": "^4.2.0"
   },
   "devDependencies": {
     "@types/chai": "^4.2.21",
