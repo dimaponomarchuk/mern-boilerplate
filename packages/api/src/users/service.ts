@@ -45,6 +45,8 @@ export default class UserService implements CRUD<User> {
   async create(resource: UserRequestBody) {
     const user = User.create({
       email: resource.email,
+      name: resource.name,
+      surname: resource.surname,
       username: resource.username,
       password: resource.password,
     });

@@ -4,6 +4,10 @@ import cryptoPassword from '../common/crypto';
 import Entity from '../common/entity';
 
 export default class User extends Entity {
+  private _name: string;
+
+  private _surname: string;
+
   private _username: string;
 
   private _email: string;
@@ -16,6 +20,8 @@ export default class User extends Entity {
 
   constructor(params: {
     id: string;
+    name: string;
+    surname: string;
     username: string;
     email: string;
     password: string;
@@ -24,11 +30,21 @@ export default class User extends Entity {
   }) {
     super(params.id);
 
+    this._name = params.name;
+    this._surname = params.surname;
     this._username = params.username;
     this._email = params.email;
     this._password = params.password;
     this._avatarURL = params.avatarURL;
     this._permissionLevel = params.permissionLevel;
+  }
+
+  get name() {
+    return this._name;
+  }
+
+  get surname() {
+    return this._surname;
   }
 
   get username() {
@@ -51,9 +67,17 @@ export default class User extends Entity {
     return this._avatarURL;
   }
 
-  static create(params: { email: string; username: string; password: string }): User {
+  static create(params: {
+    name: string;
+    surname: string;
+    email: string;
+    username: string;
+    password: string;
+  }): User {
     return new User({
       id: shortUUID.generate(),
+      name: params.name,
+      surname: params.surname,
       email: params.email,
       username: params.username,
       permissionLevel: 1,

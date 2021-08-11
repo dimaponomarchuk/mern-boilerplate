@@ -17,7 +17,14 @@ export default class UserMiddleware {
     res: express.Response,
     next: express.NextFunction,
   ) {
-    if (req.body && req.body.email && req.body.password && req.body.username) {
+    if (
+      req.body &&
+      req.body.email &&
+      req.body.password &&
+      req.body.username &&
+      req.body.name &&
+      req.body.surname
+    ) {
       next();
     } else {
       res.status(400).send({ error: `Missing required fields email and password` });

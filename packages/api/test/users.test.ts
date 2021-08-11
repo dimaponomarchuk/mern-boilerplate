@@ -6,7 +6,9 @@ import app from '../src/index';
 
 let firstUserIdTest = '';
 const firstUserBody = {
-  username: 'Marcos Silva',
+  name: 'Marcos',
+  surname: 'Silva',
+  username: 'Marcossssssilva',
   email: 'tio.makin@gmail.com',
   password: 'Pass#your!word',
 };
@@ -25,6 +27,8 @@ it(`should GET /users/:userId`, async () => {
   expect(res.body).not.to.be.empty;
   expect(res.body).to.be.an('object');
   expect(res.body.id).to.be.an('string');
+  expect(res.body.name).to.be.equals(firstUserBody.name);
+  expect(res.body.surname).to.be.equals(firstUserBody.surname);
   expect(res.body.username).to.be.equals(firstUserBody.username);
   expect(res.body.email).to.be.equals(firstUserBody.email);
   expect(res.body.id).to.be.equals(firstUserIdTest);
@@ -35,14 +39,16 @@ it(`should GET /users`, async () => {
   expect(res.body).not.to.be.empty;
   expect(res.body).to.be.an('array');
   expect(res.body[0].id).to.be.an('string');
+  expect(res.body[0].name).to.be.equals(firstUserBody.name);
+  expect(res.body[0].surname).to.be.equals(firstUserBody.surname);
   expect(res.body[0].username).to.be.equals(firstUserBody.username);
   expect(res.body[0].email).to.be.equals(firstUserBody.email);
   expect(res.body[0].id).to.be.equals(firstUserIdTest);
 });
 it('should PUT /users/:userId', async () => {
-  const username = 'Jose';
+  const name = 'Jose';
   const res = await request(app).put(`/users/${firstUserIdTest}`).send({
-    username,
+    name,
     email: firstUserBody.email,
   });
   expect(res.status).to.equal(204);
@@ -53,7 +59,7 @@ it(`should GET /users/:userId to have a new name`, async () => {
   expect(res.body).not.to.be.empty;
   expect(res.body).to.be.an('object');
   expect(res.body.id).to.be.an('string');
-  expect(res.body.username).to.be.not.equals(firstUserBody.username);
+  expect(res.body.name).to.be.not.equals(firstUserBody.name);
   expect(res.body.email).to.be.equals(firstUserBody.email);
   expect(res.body.id).to.be.equals(firstUserIdTest);
 });

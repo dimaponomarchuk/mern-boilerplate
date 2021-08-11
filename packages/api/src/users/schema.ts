@@ -2,6 +2,8 @@ import { Schema, model } from 'mongoose';
 
 export interface SerializedUser {
   _id: string;
+  name: string;
+  surname: string;
   username: string;
   email: string;
   password: string;
@@ -12,6 +14,14 @@ export interface SerializedUser {
 const UserSchema = new Schema(
   {
     _id: String,
+    name: {
+      type: String,
+      required: true,
+    },
+    surname: {
+      type: String,
+      required: true,
+    },
     username: {
       type: String,
       unique: true,

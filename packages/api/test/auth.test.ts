@@ -5,7 +5,9 @@ import app from '../src/index';
 
 let firstUserIdTest = '';
 const firstUserBody = {
-  username: 'Marcos Silva',
+  name: 'Marcos',
+  surname: 'Silva',
+  username: 'Marcossssssilva',
   email: 'tio.maki12n@gmail.com',
   password: 'Pass#your!word',
 };

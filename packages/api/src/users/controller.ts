@@ -9,6 +9,8 @@ export default class UsersController {
     res.status(200).send(
       users.map((user) => ({
         id: user.id,
+        name: user.name,
+        surname: user.surname,
         username: user.username,
         email: user.email,
         avatarURL: user.avatarURL,
@@ -21,6 +23,8 @@ export default class UsersController {
     const user = await userService.readById(req.params.userId);
     res.status(200).send({
       id: user.id,
+      name: user.name,
+      surname: user.surname,
       username: user.username,
       email: user.email,
       avatarURL: user.avatarURL,
