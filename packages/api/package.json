@@ -26,8 +26,10 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.13",
+    "multer": "^1.4.2",
     "rollup": "^2.51.1",
     "rollup-plugin-typescript2": "^0.30.0",
+    "sharp": "^0.28.3",
     "short-uuid": "^4.2.0"
   },
   "devDependencies": {
@@ -35,6 +37,8 @@
     "@types/express": "^4.17.12",
     "@types/mocha": "^8.2.3",
     "@types/mongoose": "^5.11.97",
+    "@types/multer": "^1.4.7",
+    "@types/sharp": "^0.28.5",
     "@types/supertest": "^2.0.11",
     "chai": "^4.3.4",
     "cross-env": "^7.0.3",

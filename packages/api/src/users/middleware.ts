@@ -56,4 +56,11 @@ export default class UserMiddleware {
     req.body.id = req.params.userId;
     next();
   }
+
+  extractUserFiles(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (req.files) {
+      req.body.files = req.files;
+    }
+    next();
+  }
 }

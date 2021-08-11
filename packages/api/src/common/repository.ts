@@ -34,7 +34,7 @@ export abstract class BaseRepository<T> implements IRead<T>, IWrite<T> {
     return list;
   }
 
-  async patch(id: string, item: T): Promise<boolean> {
+  async patch(id: string, item: any): Promise<boolean> {
     return this.Collection.updateOne(
       { _id: id },
       { $set: this.Serializer.serialize(item) },
@@ -53,8 +53,8 @@ export abstract class BaseRepository<T> implements IRead<T>, IWrite<T> {
     return document._id;
   }
 
-  async update(id: string, item: T): Promise<boolean> {
-    return this.Collection.findByIdAndUpdate(id, this.Serializer.serialize(item), { new: true });
+  async update(id: string, item: any): Promise<boolean> {
+    return this.Collection.updateOne({ _id: id }, this.Serializer.serialize(item), { new: true });
   }
 
   async delete(id: string) {

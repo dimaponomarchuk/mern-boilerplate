@@ -19,16 +19,19 @@ export default class UsersRoutes extends CommonRoutesConfig implements Configure
     this.app.post(`/users`, [
       usersMiddleware.validateRequiredCreateUserBodyFields,
       usersMiddleware.validateSameEmailDoesntExist,
+      usersMiddleware.extractUserFiles,
       usersController.createUser,
     ]);
     this.app.put(`/users/:userId`, [
       usersMiddleware.validateUserExists,
       usersMiddleware.extractUserId,
+      usersMiddleware.extractUserFiles,
       usersController.put,
     ]);
     this.app.patch(`/users/:userId`, [
       usersMiddleware.validateUserExists,
       usersMiddleware.extractUserId,
+      usersMiddleware.extractUserFiles,
       usersController.patch,
     ]);
     this.app.delete(`/users/:userId`, [

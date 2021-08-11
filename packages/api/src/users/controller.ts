@@ -34,21 +34,21 @@ export default class UsersController {
     res.status(201).send({ id });
   }
 
-  patch(req: express.Request, res: express.Response) {
+  async patch(req: express.Request, res: express.Response) {
     const userService = UserService.getInstance();
-    userService.patchById(req.params.userId, req.body);
+    await userService.patchById(req.params.userId, req.body);
     res.status(204).send();
   }
 
-  put(req: express.Request, res: express.Response) {
+  async put(req: express.Request, res: express.Response) {
     const userService = UserService.getInstance();
-    userService.updateById(req.params.userId, req.body);
+    await userService.updateById(req.params.userId, req.body);
     res.status(204).send();
   }
 
-  removeUser(req: express.Request, res: express.Response) {
+  async removeUser(req: express.Request, res: express.Response) {
     const userService = UserService.getInstance();
-    userService.deleteById(req.params.userId);
+    await userService.deleteById(req.params.userId);
     res.status(204).send();
   }
 }

@@ -2,6 +2,8 @@ import CRUD from '../common/crud';
 
 import User from './entity';
 import UserRepository from './repository';
+import { UserRequestBody } from './types';
+import resize from '../common/imageResize';
 
 export default class UserService implements CRUD<User> {
   private static _instance: UserService;
@@ -27,19 +29,30 @@ export default class UserService implements CRUD<User> {
     return this._repository.find(limit, page);
   }
 
-  patchById(id: string, resource: User) {
-    return this._repository.patch(id, resource);
+  async patchById(id: string, resource: UserRequestBody) {
+    const imageFile = resource.files?.find((file) => file.fieldname === 'avatar');
+    let newUrl;
+    if (imageFile) {
+      newUrl = await resize(imageFile);
+    }
+
+    return this._repository.patch(id, {
+      ...resource,
+      avatarURL: newUrl,
+    });
   }
 
-  create(resource: User) {
+  async create(resource: UserRequestBody) {
     const user = User.create({
       email: resource.email,
       username: resource.username,
       password: resource.password,
     });
+    const imageFile = resource.files?.find((file) => file.fieldname === 'avatar');
 
-    if (resource.avatarURL) {
-      user.setAvatarURL(resource.avatarURL);
+    if (imageFile) {
+      const newUrl = await resize(imageFile);
+      user.setAvatarURL(newUrl);
     }
 
     return this._repository.create(user);
@@ -49,8 +62,17 @@ export default class UserService implements CRUD<User> {
     return this._repository.findOne(resourceId);
   }
 
-  updateById(id: string, resource: User) {
-    return this._repository.update(id, resource);
+  async updateById(id: string, resource: UserRequestBody) {
+    const imageFile = resource.files?.find((file) => file.fieldname === 'avatar');
+    let newUrl;
+    if (imageFile) {
+      newUrl = await resize(imageFile);
+    }
+
+    return this._repository.update(id, {
+      ...resource,
+      avatarURL: newUrl,
+    });
   }
 
   deleteById(resourceId: string) {

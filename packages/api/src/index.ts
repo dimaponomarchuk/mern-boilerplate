@@ -8,6 +8,7 @@ import AuthRoutes from './auth/routes';
 import { CommonRoutesConfig } from './common/routes';
 import MongooseService from './database';
 import UsersRoutes from './users/routes';
+import upload from './common/upload';
 
 require('dotenv').config({
   path: path.resolve(__dirname, `../.env.${process.env.NODE_ENV}`),
@@ -20,6 +21,7 @@ const app: express.Application = express();
 const routes: any = [];
 
 app.use(bodyparser.json({ limit: '5mb' }));
+app.use(upload.any());
 
 routes.push(new UsersRoutes(app));
 routes.push(new AuthRoutes(app));

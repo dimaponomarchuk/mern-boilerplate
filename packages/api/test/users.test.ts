@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { agent as request } from 'supertest';
+import path from 'path';
 
 import app from '../src/index';
 
@@ -57,10 +58,9 @@ it(`should GET /users/:userId to have a new name`, async () => {
   expect(res.body.id).to.be.equals(firstUserIdTest);
 });
 it('should PATCH /users/:userId', async () => {
-  const newField = {
-    avatarURL: 'https://ownyourbits.com/wp-content/uploads/2017/01/chameleon3.jpg',
-  };
-  const res = await request(app).patch(`/users/${firstUserIdTest}`).send(newField);
+  const res = await request(app)
+    .patch(`/users/${firstUserIdTest}`)
+    .attach('avatar', path.join(__dirname, 'assets/test.jpeg'), 'test.jpeg');
   expect(res.status).to.equal(204);
 });
 it(`should GET /users/:userId to have a new field called avatar URL`, async () => {
@@ -69,9 +69,7 @@ it(`should GET /users/:userId to have a new field called avatar URL`, async () =
   expect(res.body).not.to.be.empty;
   expect(res.body).to.be.an('object');
   expect(res.body.id).to.be.an('string');
-  expect(res.body.avatarURL).to.be.equals(
-    'https://ownyourbits.com/wp-content/uploads/2017/01/chameleon3.jpg',
-  );
+  expect(res.body.avatarURL).not.to.be.empty;
 });
 it('should DELETE /users/:userId', async () => {
   const res = await request(app).delete(`/users/${firstUserIdTest}`).send();
